@@ -42,7 +42,7 @@
 
 
         <!-- Entities -->
-        <mapping class="com.daniyal.finalapp.model.User"/>
+        <mapping class="com.daniyal.finalapp.model.Users"/>
 <!--        <mapping class="com.daniyal.shop.entity.Product"/>-->
 
     </session-factory>

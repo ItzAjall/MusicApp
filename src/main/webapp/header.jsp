@@ -17,8 +17,24 @@
             موزیک استور
         </a>
         <div class="nav-actions">
-            <!-- دکمه ورود که حالا از حالت کامنت خارج شده و نمایش داده می‌شود -->
-            <button class="btn btn-primary" onclick="document.getElementById('authModal').classList.add('active')">ورود / ثبت‌نام</button>
+            <!-- دکمه ورود (باز کردن مُدال در صورت وجود در صفحه) -->
+            <button class="btn" onclick="openLoginModal()">ورود</button>
+
+            <!-- دکمه ثبت‌نام (رفتن به صفحه جدید) -->
+            <a href="signup.jsp" class="btn btn-primary">ثبت‌نام</a>
         </div>
     </nav>
 </div>
+
+<script>
+    // تابعی برای باز کردن مُدال ورود که از خطای جاوا اسکریپت در صفحاتی که مُدال ندارند جلوگیری می‌کند
+    function openLoginModal() {
+        const modal = document.getElementById('authModal');
+        if(modal) {
+            modal.classList.add('active');
+        } else {
+            // اگر کاربر در صفحه دیگری بود و ورود را زد، او را به صفحه اصلی بفرست تا لاگین کند
+            window.location.href = 'index.jsp';
+        }
+    }
+</script>

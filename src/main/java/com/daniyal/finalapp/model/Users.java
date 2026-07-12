@@ -3,7 +3,7 @@ package com.daniyal.finalapp.model;
 import jakarta.persistence.*;
 
 @Entity
-public class User {
+public class Users {
     private Long id;
     private boolean isAdmin;
     private String firstName;
@@ -11,9 +11,9 @@ public class User {
     private String userName;
     private String password;
 
-    public User() {}
+    public Users() {}
 
-    public User(boolean isAdmin, String firstName, String lastName, String userName, String password) {
+    public Users(boolean isAdmin, String firstName, String lastName, String userName, String password) {
         this.isAdmin = isAdmin;
         this.firstName = firstName;
         this.lastName = lastName;

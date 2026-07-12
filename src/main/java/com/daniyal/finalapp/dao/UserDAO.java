@@ -1,19 +1,19 @@
 package com.daniyal.finalapp.dao;
 
-import com.daniyal.finalapp.model.User;
+import com.daniyal.finalapp.model.Users;
 import com.daniyal.finalapp.util.HibernateUtil;
 import org.hibernate.Session;
 
 import java.util.List;
 
 public class UserDAO {
-    public List<User> findAll() {
+    public List<Users> findAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from User", User.class)
+            return session.createQuery("from Users", Users.class)
                     .getResultList();
         }
     }
-    public void save(User user) {
+    public void save(Users user) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             session.beginTransaction();
 
@@ -22,26 +22,26 @@ public class UserDAO {
             session.getTransaction().commit();
         }
     }
-    public User findById(Long id) {
+    public Users findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.find(User.class, id);
+            return session.find(Users.class, id);
         }
     }
 
-    public User findByUsername(String username) {
+    public Users findByUsername(String username) {
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             return session.createSelectionQuery(
-                            "from User where userName = :username",
-                            User.class
+                            "from Users where userName = :username",
+                            Users.class
                     )
                     .setParameter("username", username)
                     .uniqueResult();
         }
     }
 
-    public boolean setUserAdmin(User user) {
+    public boolean setUserAdmin(Users user) {
         if  (user == null)
             return false;
         if   (user.isAdmin())
@@ -52,6 +52,20 @@ public class UserDAO {
             session.merge(user);
             session.getTransaction().commit();
             return true;
+        }
+    }
+
+    public boolean isUsernameUnique(String username) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            Long count = session.createQuery(
+                            "select count(u) from Users u where u.userName = :username",
+                            Long.class
+                    )
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            return count == 0;
         }
     }
 }
