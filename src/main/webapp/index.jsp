@@ -25,8 +25,6 @@
             <h3 style="margin: 0;">ورود به سیستم</h3>
             <button class="btn" onclick="document.getElementById('authModal').classList.remove('active')" style="padding: 4px 10px; border-radius: 50%;">✕</button>
         </div>
-        <p class="text-muted" style="font-size: 0.8rem; margin-bottom: 16px;">برای تست: نام <b>admin</b> برای مدیر، و نام‌های دیگر برای کاربر عضو.</p>
-
         <form onsubmit="handleLogin(event)">
             <div class="form-group"><label>نام کاربری</label><input type="text" id="loginUsername" required></div>
             <div class="form-group"><label>رمز عبور</label><input type="password" required></div>
