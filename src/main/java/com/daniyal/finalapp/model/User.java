@@ -11,6 +11,16 @@ public class User {
     private String userName;
     private String password;
 
+    public User() {}
+
+    public User(boolean isAdmin, String firstName, String lastName, String userName, String password) {
+        this.isAdmin = isAdmin;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {

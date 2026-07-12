@@ -1,35 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موزیک استور | پنل مدیریت</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div class="navbar-container">
-    <nav class="navbar glass">
-        <a href="index.jsp" class="navbar-brand">
-            <div class="mac-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            موزیک استور
-        </a>
-        <div class="nav-actions">
-            <!-- Unified Admin Profile Button -->
-            <div class="user-pill" style="border-color: var(--danger);">
-                <div class="avatar" style="background: var(--danger);">A</div>
-                <span>مدیر سایت</span>
-            </div>
-            <a href="index.jsp" class="btn" style="color: var(--danger); border-color: rgba(255,69,58,0.3);">خروج</a>
-        </div>
-    </nav>
-</div>
+
+<%@ include file="header.jsp" %>
 
 <div class="container">
     <h2 style="margin-bottom: 32px;">داشبورد مدیریت سیستم</h2>
 
     <div class="grid">
-        <!-- Add Singer Form -->
         <div class="card glass">
             <div class="card-header"><h3 style="color: var(--accent);">۱. تعریف خواننده</h3></div>
             <form onsubmit="alert('خواننده ذخیره شد'); return false;">
@@ -40,7 +16,6 @@
             </form>
         </div>
 
-        <!-- Add Album Form -->
         <div class="card glass">
             <div class="card-header"><h3 style="color: var(--accent);">۲. اطلاعات آلبوم</h3></div>
             <form onsubmit="alert('آلبوم ذخیره شد'); return false;">
@@ -65,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Reports -->
     <div class="card glass" style="margin-top: 24px;">
         <div class="card-header flex-between">
             <h3>گزارشات سیستم</h3>
@@ -110,5 +84,4 @@
                 <tr><td>سنتی</td><td>رگ خواب</td><td>همایون شجریان</td><td>۳۱۰</td></tr>`;
     }
 </script>
-</body>
-</html>
+<%@ include file="footer.jsp" %>

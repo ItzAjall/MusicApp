@@ -1,32 +1,6 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موزیک استور | داشبورد کاربری</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div class="navbar-container">
-    <nav class="navbar glass">
-        <a href="index.jsp" class="navbar-brand">
-            <div class="mac-dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-            موزیک استور
-        </a>
-        <div class="nav-actions">
-            <!-- Unified Profile Button -->
-            <div class="user-pill">
-                <div class="avatar">U</div>
-                <span>کاربر عضو</span>
-            </div>
-            <!-- Cart Button -->
-            <button class="btn" onclick="document.getElementById('cartModal').classList.add('active')" style="display: flex; align-items: center; gap: 6px;">
-                سبد <span class="badge" id="cartCount">0</span>
-            </button>
-            <a href="index.jsp" class="btn" style="color: var(--danger); border-color: rgba(255,69,58,0.3);">خروج</a>
-        </div>
-    </nav>
-</div>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ include file="header.jsp" %>
 
 <div class="container">
     <div class="flex-between" style="margin-bottom: 32px;">
@@ -37,7 +11,6 @@
     </div>
 
     <div class="grid">
-        <!-- Album 1 -->
         <div class="card glass">
             <h3 style="margin-bottom: 4px;">بی نام</h3>
             <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;">محسن چاوشی • سبک پاپ</div>
@@ -93,10 +66,11 @@
             let html = '<div style="display: flex; flex-direction: column; gap: 8px;">';
             cart.forEach((item, index) => {
                 total += item.price * item.qty;
+                // نکته مهم: قبل از تمام علامت‌های $ یک بک‌اسلش گذاشتیم تا JSP خطا ندهد
                 html += `<div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px;">
-                        <div><div>${item.name}</div><div class="text-muted" style="font-size: 0.8rem;">تعداد: ${item.qty}</div></div>
-                        <div style="display: flex; align-items: center; gap: 12px;"><span>${(item.price * item.qty).toLocaleString()}</span>
-                        <button class="btn" style="color: var(--danger); border: none; padding: 4px;" onclick="removeFromCart(${index})">✕</button></div></div>`;
+                        <div><div>\${item.name}</div><div class="text-muted" style="font-size: 0.8rem;">تعداد: \${item.qty}</div></div>
+                        <div style="display: flex; align-items: center; gap: 12px;"><span>\${(item.price * item.qty).toLocaleString()}</span>
+                        <button class="btn" style="color: var(--danger); border: none; padding: 4px;" onclick="removeFromCart(\${index})">✕</button></div></div>`;
             });
             cartContainer.innerHTML = html + '</div>';
         }
@@ -107,5 +81,4 @@
     function submitOrder() { if(cart.length === 0) return alert('سبد خالی است.'); alert('سفارش شما در سیستم ثبت شد.'); cart = []; updateCartUI(); document.getElementById('cartModal').classList.remove('active'); document.getElementById('cartCount').innerText = 0; }
     function voteAlbum(genre) { alert(`رای شما در سبک "${genre}" برای این ماه ثبت شد.`); }
 </script>
-</body>
-</html>
+<%@ include file="footer.jsp" %>
