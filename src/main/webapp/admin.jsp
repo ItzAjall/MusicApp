@@ -1,17 +1,24 @@
+<%@ page import="com.daniyal.finalapp.model.Users" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@ include file="header.jsp" %>
-
+<jsp:include page="header.jsp"/>
+<%
+    Users user = (Users) session.getAttribute("user");
+    if (user == null)
+        response.sendRedirect("index.jsp");
+    else if (!user.isAdmin())
+        response.sendRedirect("member.jsp");
+%>
 <div class="container">
     <h2 style="margin-bottom: 32px;">داشبورد مدیریت سیستم</h2>
 
     <div class="grid">
         <div class="card glass">
             <div class="card-header"><h3 style="color: var(--accent);">۱. تعریف خواننده</h3></div>
-            <form onsubmit="alert('خواننده ذخیره شد'); return false;">
-                <div class="form-group"><label>نام</label><input type="text" required></div>
-                <div class="form-group"><label>نام خانوادگی</label><input type="text" required></div>
-                <div class="form-group"><label>نام مستعار (یکتا)</label><input type="text" required></div>
+            <form method="POST" action="add_singer">
+                <div class="form-group"><label>نام</label><input type="text" required name="firstName"></div>
+                <div class="form-group"><label>نام خانوادگی</label><input type="text" required name="lastName"></div>
+                <div class="form-group"><label>نام مستعار (یکتا)</label><input type="text" required name="nickName"></div>
                 <button type="submit" class="btn btn-primary">ثبت خواننده</button>
             </form>
         </div>
@@ -49,6 +56,7 @@
         <div class="segmented-control">
             <div class="segment active" id="seg-1" onclick="switchTab('tab-bestselling', this)">پر فروش‌ترین در ماه</div>
             <div class="segment" id="seg-2" onclick="switchTab('tab-topvoted', this)">Top ترین‌ها بر اساس رای</div>
+            <div class="segment" id="seg-3" onclick="switchTab('tab-singers_name', this)">لیست خواننده ها</div>
         </div>
 
         <div id="tab-bestselling" class="tab-content active">
@@ -64,12 +72,20 @@
                 <tbody id="topVotedData"><tr><td colspan="4" style="text-align: center;" class="text-muted">روی بروزرسانی کلیک کنید</td></tr></tbody>
             </table>
         </div>
+
+        <div id="tab-singers_name" class="tab-content">
+            <table>
+                <thead><tr><th>نام</th><th>نام خانوادگی</th><th>نام مستعار</th></tr></thead>
+                <tbody id="singers_name"><tr><td colspan="3" style="text-align: center;" class="text-muted">روی بروزرسانی کلیک کنید</td></tr></tbody>
+            </table>
+        </div>
     </div>
 </div>
 
 <script>
     function switchTab(tabId, element) {
         document.querySelectorAll('.segment').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         element.classList.add('active');
         document.getElementById(tabId).classList.add('active');

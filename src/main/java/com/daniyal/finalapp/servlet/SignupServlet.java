@@ -27,7 +27,7 @@ public class SignupServlet extends HttpServlet {
 
         UserDAO userDAO = new UserDAO();
 
-        if (!userDAO.isUsernameUnique(userName)) {
+        if (!userDAO.isUsernameExist(userName)) {
 
             response.getWriter().println("Username already exists");
             return;

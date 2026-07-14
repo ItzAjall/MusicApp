@@ -1,6 +1,14 @@
+<%@ page import="com.daniyal.finalapp.model.Users" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@ include file="header.jsp" %>
+<jsp:include page="header.jsp"/>
+<%
+    Users user = (Users) session.getAttribute("user");
+    if (user == null)
+        response.sendRedirect("index.jsp");
+    else if (user.isAdmin())
+        response.sendRedirect("admin.jsp");
+%>
 
 <div class="container">
     <div class="flex-between" style="margin-bottom: 32px;">

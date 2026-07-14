@@ -55,7 +55,7 @@ public class UserDAO {
         }
     }
 
-    public boolean isUsernameUnique(String username) {
+    public boolean isUsernameExist(String username) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             Long count = session.createQuery(

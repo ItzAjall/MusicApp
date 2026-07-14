@@ -43,8 +43,7 @@
 
         <!-- Entities -->
         <mapping class="com.daniyal.finalapp.model.Users"/>
-<!--        <mapping class="com.daniyal.shop.entity.Product"/>-->
-
+        <mapping class="com.daniyal.finalapp.model.Singer"/>
     </session-factory>
 
 </hibernate-configuration>

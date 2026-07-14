@@ -1,6 +1,12 @@
+<%@ page import="com.daniyal.finalapp.model.Users" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%@ include file="header.jsp" %>
+<jsp:include page="header.jsp"/>
+<%
+    Users user = (Users) session.getAttribute("user");
+    if (user!=null)
+        response.sendRedirect("member.jsp");
+%>
 <div class="container">
     <h2 style="margin-bottom: 8px;">ویترین آلبوم‌ها</h2>
     <p class="text-muted" style="margin-bottom: 32px;">گوش دادن به نمونه آهنگ‌ها و مشاهده آلبوم‌های موجود</p>
@@ -25,9 +31,9 @@
             <h3 style="margin: 0;">ورود به سیستم</h3>
             <button class="btn" onclick="document.getElementById('authModal').classList.remove('active')" style="padding: 4px 10px; border-radius: 50%;">✕</button>
         </div>
-        <form onsubmit="handleLogin(event)">
-            <div class="form-group"><label>نام کاربری</label><input type="text" id="loginUsername" required></div>
-            <div class="form-group"><label>رمز عبور</label><input type="password" required></div>
+        <form method="post" action="login">
+            <div class="form-group"><label>نام کاربری</label><input type="text" id="loginUsername" required name="username"></div>
+            <div class="form-group"><label>رمز عبور</label><input type="password" required name="password"></div>
             <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">ورود</button>
         </form>
     </div>
