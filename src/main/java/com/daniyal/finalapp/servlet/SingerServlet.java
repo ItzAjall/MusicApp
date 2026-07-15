@@ -19,7 +19,7 @@ public class SingerServlet extends HttpServlet {
 
         SingerDAO singerDAO = new SingerDAO();
         if(!singerDAO.isNickNameExist(nickName)){
-            response.getWriter().println("Username already exists");
+            response.getWriter().println("Singer Nickname already exists");
             return;
         }
 

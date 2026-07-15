@@ -1,13 +1,19 @@
 <%@ page import="com.daniyal.finalapp.model.Users" %>
+<%@ page import="com.daniyal.finalapp.dao.SingerDAO" %>
+<%@ page import="com.daniyal.finalapp.model.Singer" %>
+<%@ page import="com.daniyal.finalapp.dao.GenreDAO" %>
+<%@ page import="com.daniyal.finalapp.model.Genre" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <jsp:include page="header.jsp"/>
 <%
     Users user = (Users) session.getAttribute("user");
-    if (user == null)
-        response.sendRedirect("index.jsp");
-    else if (!user.isAdmin())
-        response.sendRedirect("member.jsp");
+    SingerDAO singerDAO = new SingerDAO();
+    GenreDAO genreDAO = new GenreDAO();
+//    if (user == null)
+//        response.sendRedirect("index.jsp");
+//    else if (!user.isAdmin())
+//        response.sendRedirect("member.jsp");
 %>
 <div class="container">
     <h2 style="margin-bottom: 32px;">داشبورد مدیریت سیستم</h2>
@@ -21,14 +27,27 @@
                 <div class="form-group"><label>نام مستعار (یکتا)</label><input type="text" required name="nickName"></div>
                 <button type="submit" class="btn btn-primary">ثبت خواننده</button>
             </form>
+            <br><br>
+            <div class="card-header"><h3 style="color: var(--accent);">۲. تعریف سبک آهنگ</h3></div>
+            <form method="POST" action="add_genre">
+                <div class="form-group"><label>نام</label><input type="text" required name="name"></div>
+                <button type="submit" class="btn btn-primary">ثبت سبک</button>
+            </form>
         </div>
 
         <div class="card glass">
-            <div class="card-header"><h3 style="color: var(--accent);">۲. اطلاعات آلبوم</h3></div>
-            <form onsubmit="alert('آلبوم ذخیره شد'); return false;">
+            <div class="card-header"><h3 style="color: var(--accent);">۳. اطلاعات آلبوم</h3></div>
+            <form method="post" action="add_album" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>خواننده</label>
-                    <select required><option value="">انتخاب...</option><option value="1">محسن چاوشی</option></select>
+                    <select required>
+                        <option hidden>انتخاب...</option>
+                        <%
+                        for (Singer singer : singerDAO.findAll()){
+                        %>
+                        <option value="<%=singer.getId()%>"><%=singer.getFirstName()%> <%=singer.getLastName()%></option>
+                        <%}%>
+                    </select>
                 </div>
                 <div class="form-group"><label>نام آلبوم</label><input type="text" required></div>
                 <div class="row">
@@ -38,9 +57,16 @@
                 <div class="row">
                     <div class="col form-group">
                         <label>سبک</label>
-                        <select required><option value="پاپ">پاپ</option><option value="راک">راک</option><option value="سنتی">سنتی</option></select>
+                        <select required>
+                            <option hidden>انتخاب...</option>
+                            <%
+                                for (Genre genre : genreDAO.findAll()){
+                            %>
+                            <option value="<%=genre.getId()%>"><%=genre.getGenreName()%> </option>
+                            <%}%>
+                        </select>
                     </div>
-                    <div class="col form-group"><label>آهنگ نمونه (URL)</label><input type="text"></div>
+                    <div class="col form-group"><label>آهنگ نمونه</label><input type="file" name="music" accept="audio/*"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">ثبت آلبوم</button>
             </form>
@@ -48,10 +74,6 @@
     </div>
 
     <div class="card glass" style="margin-top: 24px;">
-        <div class="card-header flex-between">
-            <h3>گزارشات سیستم</h3>
-            <button class="btn" onclick="fetchReports()">بروزرسانی جدول ↻</button>
-        </div>
 
         <div class="segmented-control">
             <div class="segment active" id="seg-1" onclick="switchTab('tab-bestselling', this)">پر فروش‌ترین در ماه</div>
@@ -76,7 +98,10 @@
         <div id="tab-singers_name" class="tab-content">
             <table>
                 <thead><tr><th>نام</th><th>نام خانوادگی</th><th>نام مستعار</th></tr></thead>
-                <tbody id="singers_name"><tr><td colspan="3" style="text-align: center;" class="text-muted">روی بروزرسانی کلیک کنید</td></tr></tbody>
+                <%for (Singer singer : singerDAO.findAll()) {
+                %>
+                <tr><td><%=singer.getFirstName()%></td><td><%=singer.getLastName()%></td><td><%=singer.getNickName()%></td></tr>
+                <%}%>
             </table>
         </div>
     </div>
@@ -86,18 +111,8 @@
     function switchTab(tabId, element) {
         document.querySelectorAll('.segment').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         element.classList.add('active');
         document.getElementById(tabId).classList.add('active');
-    }
-
-    function fetchReports() {
-        document.getElementById('bestSellingData').innerHTML = `
-                <tr><td>تیر</td><td>پاپ</td><td>بی نام</td><td>۱,۲۴۰</td></tr>
-                <tr><td>تیر</td><td>سنتی</td><td>رگ خواب</td><td>۸۹۰</td></tr>`;
-        document.getElementById('topVotedData').innerHTML = `
-                <tr><td>پاپ</td><td>بی نام</td><td>محسن چاوشی</td><td>۴۵۰</td></tr>
-                <tr><td>سنتی</td><td>رگ خواب</td><td>همایون شجریان</td><td>۳۱۰</td></tr>`;
     }
 </script>
 <%@ include file="footer.jsp" %>
