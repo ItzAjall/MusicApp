@@ -1,5 +1,6 @@
 package com.daniyal.finalapp.dao;
 
+import com.daniyal.finalapp.model.Album;
 import com.daniyal.finalapp.model.Singer;
 import com.daniyal.finalapp.model.Users;
 import com.daniyal.finalapp.util.HibernateUtil;
@@ -33,6 +34,12 @@ public class SingerDAO {
                     )
                     .setParameter("nickName", nickName)
                     .uniqueResult();
+        }
+    }
+
+    public Singer findById(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.find(Singer.class, id);
         }
     }
 

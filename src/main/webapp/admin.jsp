@@ -40,7 +40,7 @@
             <form method="post" action="add_album" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>خواننده</label>
-                    <select required>
+                    <select required name="singerId">
                         <option hidden>انتخاب...</option>
                         <%
                         for (Singer singer : singerDAO.findAll()){
@@ -49,15 +49,15 @@
                         <%}%>
                     </select>
                 </div>
-                <div class="form-group"><label>نام آلبوم</label><input type="text" required></div>
+                <div class="form-group"><label>نام آلبوم</label><input type="text" required name="albumName"></div>
                 <div class="row">
-                    <div class="col form-group"><label>تاریخ انتشار</label><input type="date" required></div>
-                    <div class="col form-group"><label>قیمت (تومان)</label><input type="number" required></div>
+                    <div class="col form-group"><label>تاریخ انتشار</label><input type="date" required name="releaseDate"></div>
+                    <div class="col form-group"><label>قیمت (تومان)</label><input type="number" required name="albumPrice"></div>
                 </div>
                 <div class="row">
                     <div class="col form-group">
                         <label>سبک</label>
-                        <select required>
+                        <select required name="genreId">
                             <option hidden>انتخاب...</option>
                             <%
                                 for (Genre genre : genreDAO.findAll()){

@@ -1,9 +1,12 @@
 <%@ page import="com.daniyal.finalapp.model.Users" %>
+<%@ page import="com.daniyal.finalapp.dao.AlbumDAO" %>
+<%@ page import="com.daniyal.finalapp.model.Album" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <jsp:include page="header.jsp"/>
 <%
     Users user = (Users) session.getAttribute("user");
+    AlbumDAO albumDAO = new AlbumDAO();
     if (user!=null)
         response.sendRedirect("member.jsp");
 %>
@@ -13,13 +16,17 @@
 
     <div class="grid">
 
-
+        <%
+        for (Album album : albumDAO.findAll()){
+        %>
         <div class="card glass">
-            <h3 style="margin-bottom: 4px;">sample</h3>
-            <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;"> singer name •  music genre </div>
-            <audio controls><source src="#" type="audio/mpeg"></audio>
-            <div style="margin-top: 16px; font-weight: bold; font-size: 1.1rem; color: var(--accent);">price</div>
+            <h3 style="margin-bottom: 4px;"><%=album.getAlbumName()%></h3>
+            <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;"> <%=album.getSinger().getFirstName()%> <%=album.getSinger().getLastName()%> •  <%=album.getGenre().getGenreName()%> </div>
+            <audio controls><source src="music/<%=album.getSongPath()%>" type="audio/mpeg"></audio>
+            <div style="margin-top: 16px; font-weight: bold; font-size: 1.1rem; color: var(--accent);"><%=album.getAlbumPrice()%> تومان</div>
         </div>
+
+        <%}%>
 
     </div>
 </div>

@@ -1,13 +1,9 @@
 package com.daniyal.finalapp.dao;
 
 import com.daniyal.finalapp.model.Genre;
-import com.daniyal.finalapp.model.Singer;
-import com.daniyal.finalapp.model.Users;
 import com.daniyal.finalapp.util.HibernateUtil;
 import org.hibernate.Session;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.List;
 
 public class GenreDAO {
