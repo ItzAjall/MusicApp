@@ -2,7 +2,7 @@ package com.daniyal.finalapp.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class Users {
     private String lastName;
     private String userName;
     private String password;
-    private List<Album> boughtAlbums = new ArrayList<>();
+    private Map<Album, Integer> boughtAlbums = new HashMap<>();
     private Map<Album, Integer> cart = new HashMap<>();
 
     public Users() {}
@@ -81,22 +81,27 @@ public class Users {
         this.password = password;
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
             name = "users_bought_albums",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "album_id")
+            joinColumns = @JoinColumn(name = "user_id")
     )
-    public List<Album> getBoughtAlbums() {
+    @MapKeyJoinColumn(name = "album_id")
+    @Column(name = "quantity")
+    public Map<Album, Integer> getBoughtAlbums() {
         return boughtAlbums;
     }
 
-    public void setBoughtAlbums(List<Album> boughtAlbums) {
+    public void setBoughtAlbums(Map<Album, Integer> boughtAlbums) {
         this.boughtAlbums = boughtAlbums;
     }
 
-    public void addAlbum(Album album) {
-        this.boughtAlbums.add(album);
+    public void addAlbum(Album album, int quantity) {
+        if (boughtAlbums.containsKey(album)) {
+            boughtAlbums.put(album, boughtAlbums.get(album) + quantity);
+        } else {
+            boughtAlbums.put(album, quantity);
+        }
     }
 
 
@@ -133,7 +138,11 @@ public class Users {
                 cart.put(album, currentQuantity - quantity);
             }
         }
-    }.
+    }
+
+    public void clearCart(){
+        cart.clear();
+    }
 
 
     @Transient

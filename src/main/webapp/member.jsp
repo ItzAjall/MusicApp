@@ -24,12 +24,13 @@
 
     <div class="grid">
         <%
-        for (Album album : user.getBoughtAlbums()){
+        for (Album album : user.getBoughtAlbums().keySet()){
         %>
         <div class="card glass">
-            <h3 style="margin-bottom: 4px;">بی نام</h3>
-            <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;">محسن چاوشی • سبک پاپ</div>
-            <audio controls><source src="#" type="audio/mpeg"></audio>
+            <h3 style="margin-bottom: 4px;"><%=album.getAlbumName()%></h3>
+            <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;"><%=album.getSinger().getFirstName()%>  <%=album.getSinger().getLastName()%>• <%=album.getGenre().getGenreName()%></div>
+            <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;">تعداد خریده شده: <%=user.getBoughtAlbums().get(album)%></div>
+            <audio controls><source src="music/<%=album.getSongPath()%>" type="audio/mpeg"></audio>
             <button class="btn" style="width: 100%; margin-top: 12px; border-color: rgba(255,255,255,0.2);" onclick="voteAlbum('پاپ')">★ رای به این آلبوم (در این ماه)</button>
         </div>
 
@@ -52,7 +53,6 @@
                 <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;"> <%=album.getSinger().getFirstName()%> <%=album.getSinger().getLastName()%> •  <%=album.getGenre().getGenreName()%> </div>
                 <audio controls><source src="music/<%=album.getSongPath()%>" type="audio/mpeg"></audio>
                 <div class="flex-between" style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--glass-border);">
-<%--                    <div style="font-weight: bold; color: var(--accent);"><%=album.getAlbumPrice()%> تومان</div>--%>
                     <div style="font-weight: bold; color: var(--accent);">
                         <%=album.getAlbumPrice()%>
                         <span style="color: white;">تومان</span>
@@ -98,7 +98,7 @@
         </div>
         <div class="flex-between" style="border-top: 1px solid var(--glass-border); padding-top: 16px;">
             <div>جمع: <strong id="cartTotal" style="color: var(--accent);"><%=user.getCartTotalPrice()%></strong> تومان</div>
-            <button class="btn btn-primary" onclick="submitOrder()">تکمیل سفارش</button>
+            <button class="btn btn-primary" onclick="window.location.href ='submitOrder'">تکمیل سفارش</button>
         </div>
     </div>
 </div>
@@ -115,7 +115,6 @@
 
 
 
-    function submitOrder() { if(cart.length === 0) return alert('سبد خالی است.'); alert('سفارش شما در سیستم ثبت شد.'); cart = []; updateCartUI(); document.getElementById('cartModal').classList.remove('active'); document.getElementById('cartCount').innerText = 0; }
     function voteAlbum(genre) { alert(`رای شما در سبک "${genre}" برای این ماه ثبت شد.`); }
 </script>
 <%@ include file="footer.jsp" %>
