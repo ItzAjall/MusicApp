@@ -11,10 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Map;
 
-@WebServlet("/addToCart")
-public class AddToCartServlet extends HttpServlet {
+@WebServlet("/removeFromCart")
+public class RemoveFromCartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Users user = (Users) req.getSession().getAttribute("user");
@@ -26,7 +25,7 @@ public class AddToCartServlet extends HttpServlet {
         Album album = albumDAO.findById(albumId);
 
 
-        user.addToCart(album,quantity);
+        user.removeFromCart(album, quantity);
 
         userDAO.update(user);
         resp.sendRedirect("member.jsp");

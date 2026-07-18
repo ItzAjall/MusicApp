@@ -3,7 +3,9 @@ package com.daniyal.finalapp.model;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class Users {
@@ -14,7 +16,7 @@ public class Users {
     private String userName;
     private String password;
     private List<Album> boughtAlbums = new ArrayList<>();
-    private List<Album> cart = new ArrayList<>();
+    private Map<Album, Integer> cart = new HashMap<>();
 
     public Users() {}
 
@@ -97,34 +99,57 @@ public class Users {
         this.boughtAlbums.add(album);
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
             name = "users_cart",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "album_id")
+            joinColumns = @JoinColumn(name = "user_id")
     )
-    public List<Album> getCart() {
+    @MapKeyJoinColumn(name = "album_id")
+    @Column(name = "quantity")
+    public Map<Album, Integer> getCart() {
         return cart;
     }
 
-    public void setCart(List<Album> cart) {
+    public void setCart(Map<Album, Integer> cart) {
         this.cart = cart;
     }
 
-    public void addToCart(Album album) {
-        this.cart.add(album);
+    public void addToCart(Album album, int quantity) {
+        if (cart.containsKey(album)) {
+            cart.put(album, cart.get(album) + quantity);
+        } else {
+            cart.put(album, quantity);
+        }
     }
+
+    public void removeFromCart(Album album, int quantity) {
+        if (cart.containsKey(album)) {
+            int currentQuantity = cart.get(album);
+
+            if (currentQuantity <= quantity) {
+                cart.remove(album);
+            } else {
+                cart.put(album, currentQuantity - quantity);
+            }
+        }
+    }.
+
 
     @Transient
     public int getCartSize() {
-        return this.cart.size();
+        int cartSize = 0;
+        for (Album album : this.cart.keySet()) {
+            cartSize += cart.get(album);
+        }
+        return cartSize;
     }
 
     @Transient
     public int getCartTotalPrice(){
         int totalPrice = 0;
-        for (Album album : this.cart) {
-            totalPrice += album.getAlbumPrice();
+        for (Album album : this.cart.keySet()) {
+            totalPrice += cart.get(album) * album.getAlbumPrice();
         }
         return totalPrice;
     }
