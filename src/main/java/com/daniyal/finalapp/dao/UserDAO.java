@@ -68,4 +68,12 @@ public class UserDAO {
             return count == 0;
         }
     }
+
+    public void update(Users user) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.merge(user);
+            session.getTransaction().commit();
+        }
+    }
 }

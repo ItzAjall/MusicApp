@@ -2,6 +2,9 @@ package com.daniyal.finalapp.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Users {
     private Long id;
@@ -10,6 +13,8 @@ public class Users {
     private String lastName;
     private String userName;
     private String password;
+    private List<Album> boughtAlbums = new ArrayList<>();
+    private List<Album> cart = new ArrayList<>();
 
     public Users() {}
 
@@ -72,5 +77,55 @@ public class Users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_bought_albums",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id")
+    )
+    public List<Album> getBoughtAlbums() {
+        return boughtAlbums;
+    }
+
+    public void setBoughtAlbums(List<Album> boughtAlbums) {
+        this.boughtAlbums = boughtAlbums;
+    }
+
+    public void addAlbum(Album album) {
+        this.boughtAlbums.add(album);
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_cart",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id")
+    )
+    public List<Album> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<Album> cart) {
+        this.cart = cart;
+    }
+
+    public void addToCart(Album album) {
+        this.cart.add(album);
+    }
+
+    @Transient
+    public int getCartSize() {
+        return this.cart.size();
+    }
+
+    @Transient
+    public int getCartTotalPrice(){
+        int totalPrice = 0;
+        for (Album album : this.cart) {
+            totalPrice += album.getAlbumPrice();
+        }
+        return totalPrice;
     }
 }

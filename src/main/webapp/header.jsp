@@ -60,6 +60,9 @@
             <a href="<%=contextPath%>/<%=homePage%>" class="btn">
                 <%=user.getFirstName()%> <%=user.getLastName()%>
             </a>
+            <button class="btn" onclick="document.getElementById('cartModal').classList.add('active')" style="display: flex; align-items: center; gap: 6px;">
+                سبد <span class="badge" id="cartCount"><%=user.getCartSize()%></span>
+            </button>
         </div>
 
         <% } %>
