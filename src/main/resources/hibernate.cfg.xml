@@ -46,6 +46,7 @@
         <mapping class="com.daniyal.finalapp.model.Singer"/>
         <mapping class="com.daniyal.finalapp.model.Genre"/>
         <mapping class="com.daniyal.finalapp.model.Album"/>
+        <mapping class="com.daniyal.finalapp.model.Vote"/>
     </session-factory>
 
 </hibernate-configuration>
