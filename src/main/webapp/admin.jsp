@@ -3,6 +3,9 @@
 <%@ page import="com.daniyal.finalapp.model.Singer" %>
 <%@ page import="com.daniyal.finalapp.dao.GenreDAO" %>
 <%@ page import="com.daniyal.finalapp.model.Genre" %>
+<%@ page import="com.daniyal.finalapp.model.Album" %>
+<%@ page import="com.daniyal.finalapp.dao.VoteDAO" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <jsp:include page="header.jsp"/>
@@ -10,6 +13,7 @@
     Users user = (Users) session.getAttribute("user");
     SingerDAO singerDAO = new SingerDAO();
     GenreDAO genreDAO = new GenreDAO();
+    VoteDAO voteDAO = new VoteDAO();
 //    if (user == null)
 //        response.sendRedirect("index.jsp");
 //    else if (!user.isAdmin())
@@ -91,7 +95,14 @@
         <div id="tab-topvoted" class="tab-content">
             <table>
                 <thead><tr><th>سبک</th><th>نام آلبوم</th><th>خواننده</th><th>آرای کسب شده</th></tr></thead>
-                <tbody id="topVotedData"><tr><td colspan="4" style="text-align: center;" class="text-muted">روی بروزرسانی کلیک کنید</td></tr></tbody>
+                <%
+                    List<Object[]> result = voteDAO.getTopAlbumByVote();
+                    for (Object[] row : result) {
+                        Album album = (Album) row[0];
+                        Long votes = (Long) row[1];
+                %>
+                <tr><td><%=album.getGenre().getGenreName()%></td><td><%=album.getAlbumName()%></td><td><%=album.getSinger().getFirstName()%> <%=album.getSinger().getLastName()%></td><td><%=votes%></td></tr>
+                <%}%>
             </table>
         </div>
 

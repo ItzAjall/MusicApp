@@ -9,14 +9,16 @@ public class Vote {
     private Long id;
     private Users user;
     private Genre genre;
+    private Album album;
     private int year;
     private int month;
 
     public Vote() {}
 
-    public Vote(Users user, Genre genre) {
+    public Vote(Users user, Album album, Genre genre) {
         this.user = user;
         this.genre = genre;
+        this.album = album;
         LocalDate now = LocalDate.now();
         this.year = now.getYear();
         this.month = now.getMonthValue();
@@ -65,5 +67,14 @@ public class Vote {
 
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    @ManyToOne
+    public Album getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
     }
 }

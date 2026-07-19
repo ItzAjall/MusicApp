@@ -31,7 +31,7 @@
             <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;"><%=album.getSinger().getFirstName()%>  <%=album.getSinger().getLastName()%> • <%=album.getGenre().getGenreName()%></div>
             <div class="text-muted" style="font-size: 0.85rem; margin-bottom: 12px;">تعداد خریده شده: <%=user.getBoughtAlbums().get(album)%></div>
             <audio controls><source src="music/<%=album.getSongPath()%>" type="audio/mpeg"></audio>
-            <button class="btn" style="width: 100%; margin-top: 12px; border-color: rgba(255,255,255,0.2);" onclick="voteAlbum(<%=album.getGenre().getId()%>)">★ رای به این آلبوم (در این ماه)</button>
+            <button class="btn" style="width: 100%; margin-top: 12px; border-color: rgba(255,255,255,0.2);" onclick="voteAlbum(<%=album.getId()%>,<%=album.getGenre().getId()%>)">★ رای به این آلبوم (در این ماه)</button>
         </div>
 
         <%}%>
@@ -112,10 +112,22 @@
         let qty = document.getElementById("remove-qty-" + albumId).value;
         window.location.href = "removeFromCart?id=" + albumId + "&qty=" + qty;
     }
-    function voteAlbum(genreId) {
-        window.location.href = "vote?id=" + genreId;
+    function voteAlbum(albumId, genreId) {
+        window.location.href = "vote?genreId=" + genreId + "&albumId=" + albumId;
     }
 
 
 </script>
+<%
+    String alert = (String) session.getAttribute("alert");
+
+    if (alert != null) {
+%>
+<script>
+    alert("<%= alert %>");
+</script>
+<%
+        session.removeAttribute("alert");
+    }
+%>
 <%@ include file="footer.jsp" %>

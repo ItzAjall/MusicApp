@@ -1,8 +1,10 @@
 package com.daniyal.finalapp.servlet;
 
 import com.daniyal.finalapp.dao.AlbumDAO;
+import com.daniyal.finalapp.dao.SellDAO;
 import com.daniyal.finalapp.dao.UserDAO;
 import com.daniyal.finalapp.model.Album;
+import com.daniyal.finalapp.model.Sell;
 import com.daniyal.finalapp.model.Users;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,9 +20,15 @@ public class SubmitOrderServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Users user = (Users) req.getSession().getAttribute("user");
         UserDAO userDAO = new UserDAO();
+        SellDAO sellDAO = new SellDAO();
 
         for (Album album : user.getCart().keySet()) {
             user.addAlbum(album,user.getCart().get(album));
+            if(sellDAO.isSellExistsByUserAlbum(user,album)){
+                Sell sell = sellDAO.findByUserAndAlbum(user,album);
+                sell.setAmount(sell.getAmount()+user.getCart().get(album));
+                sellDAO.update(sell);
+            }
         }
         user.clearCart();
         userDAO.update(user);
