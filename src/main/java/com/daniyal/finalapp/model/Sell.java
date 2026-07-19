@@ -2,19 +2,23 @@ package com.daniyal.finalapp.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 public class Sell {
     private Long id;
     private Album album;
     private Users user;
-    private int amount;
+    private int year;
+    private int month;
 
     public Sell() {}
 
-    public Sell(Album album, Users user, int amount) {
+    public Sell(Album album, Users user) {
         this.album = album;
         this.user = user;
-        this.amount = amount;
+        this.year = LocalDate.now().getYear();
+        this.month = LocalDate.now().getMonthValue();
     }
 
     @Id
@@ -45,12 +49,19 @@ public class Sell {
         this.user = user;
     }
 
-    @Column(nullable = false)
-    public int getAmount() {
-        return amount;
+    public int getYear() {
+        return year;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 }

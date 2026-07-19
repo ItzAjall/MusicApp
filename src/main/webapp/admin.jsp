@@ -14,10 +14,15 @@
     SingerDAO singerDAO = new SingerDAO();
     GenreDAO genreDAO = new GenreDAO();
     VoteDAO voteDAO = new VoteDAO();
-//    if (user == null)
-//        response.sendRedirect("index.jsp");
-//    else if (!user.isAdmin())
-//        response.sendRedirect("member.jsp");
+    if (user == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+
+    if (!user.isAdmin()) {
+        response.sendRedirect("member.jsp");
+        return;
+    }
 %>
 <div class="container">
     <h2 style="margin-bottom: 32px;">داشبورد مدیریت سیستم</h2>
@@ -81,14 +86,34 @@
 
         <div class="segmented-control">
             <div class="segment active" id="seg-1" onclick="switchTab('tab-bestselling', this)">پر فروش‌ترین در ماه</div>
-            <div class="segment" id="seg-2" onclick="switchTab('tab-topvoted', this)">Top ترین‌ها بر اساس رای</div>
+            <div class="segment" id="seg-2" onclick="switchTab('tab-topvoted', this)">ترین‌ها بر اساس رای</div>
             <div class="segment" id="seg-3" onclick="switchTab('tab-singers_name', this)">لیست خواننده ها</div>
         </div>
 
         <div id="tab-bestselling" class="tab-content active">
+            <div class="col form-group">
+                <form method="get" action="get_bestsellers">
+                <label>انتخواب تاریخ</label><input type="date" required name="date">
+                    <br><br>
+                    <button type="submit" class="btn btn-primary">جست و جو</button>
+                </form>
+
+            </div>
             <table>
-                <thead><tr><th>ماه</th><th>سبک</th><th>نام آلبوم</th><th>تعداد فروش</th></tr></thead>
-                <tbody id="bestSellingData"><tr><td colspan="4" style="text-align: center;" class="text-muted">روی بروزرسانی کلیک کنید</td></tr></tbody>
+                <thead><tr><th>سبک</th><th>نام آلبوم</th><th>تعداد فروش</th></tr></thead>
+                <%
+                    List<Object[]> bestSeller = (List<Object[]>) session.getAttribute("bestSeller");
+
+                    if (bestSeller != null) {
+                        for (Object[] row : bestSeller) {
+                            Album album = (Album) row[0];
+                            Long sells = (Long) row[1];
+                %>
+                <tr><td><%=album.getGenre().getGenreName()%></td><td><%=album.getAlbumName()%></td><td><%=sells%></td></tr>
+                <%}
+                        session.removeAttribute("bestSeller");
+                    }
+                %>
             </table>
         </div>
 

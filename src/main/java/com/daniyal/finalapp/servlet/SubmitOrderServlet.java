@@ -24,10 +24,9 @@ public class SubmitOrderServlet extends HttpServlet {
 
         for (Album album : user.getCart().keySet()) {
             user.addAlbum(album,user.getCart().get(album));
-            if(sellDAO.isSellExistsByUserAlbum(user,album)){
-                Sell sell = sellDAO.findByUserAndAlbum(user,album);
-                sell.setAmount(sell.getAmount()+user.getCart().get(album));
-                sellDAO.update(sell);
+            for (int i = 0; i < user.getCart().get(album); i++) {
+                Sell sell = new Sell(album, user);
+                sellDAO.save(sell);
             }
         }
         user.clearCart();

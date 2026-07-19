@@ -24,20 +24,6 @@ public class SellDAO {
         }
     }
 
-    public Boolean isSellExistsByUserAlbum(Users user, Album album) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
-            Long count = session.createQuery(
-                            "select count(u) from Sell u where u.user = :user and u.album = :album",
-                            Long.class
-                    )
-                    .setParameter("user", user)
-                    .setParameter("album", album)
-                    .getSingleResult();
-
-            return count == 0;
-        }
-    }
 
     public Sell findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -60,6 +46,22 @@ public class SellDAO {
             session.beginTransaction();
             session.merge(sell);
             session.getTransaction().commit();
+        }
+    }
+
+    public List<Object[]> getTopSellsPerMonth(int year, int month) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery(
+                    "select s.album, count(s.album) " +
+                            "from Sell s " +
+                            "where s.year = :year and s.month = :month " +
+                            "group by s.album " +
+                            "order by count(s.album) desc",
+                    Object[].class
+            )
+                    .setParameter("year", year)
+                    .setParameter("month", month)
+                    .getResultList();
         }
     }
 }

@@ -11,8 +11,11 @@
         response.sendRedirect("index.jsp");
         return;
     }
-    else if (user.isAdmin())
+
+    if (user.isAdmin()) {
         response.sendRedirect("admin.jsp");
+        return;
+    }
 %>
 
 <div class="container">
